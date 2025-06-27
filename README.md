@@ -1,10 +1,10 @@
 # 🏷️ LoyaltyProgram - API REST .NET Core + PostgreSQL
 
 API de gestion d'un programme de fidélité client.
-Stack moderne : .NET 9, Docker, PostgreSQL.
+Stack moderne : .NET 8, Docker, PostgreSQL.
 
 [![.NET](https://github.com/delitamakanda/LoyaltyProgram/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/delitamakanda/LoyaltyProgram/actions/workflows/ci.yml)
-![version](https://img.shields.io/badge/dotnet%20version-net9.0-blue)
+![version](https://img.shields.io/badge/dotnet%20version-net8.0-blue)
 
 
 ## 📦 Fonctionnalités
@@ -13,7 +13,7 @@ Stack moderne : .NET 9, Docker, PostgreSQL.
 - ✅ Documentation Swagger intégrée
 
 ## 🚀 Prérequis
-- .NET 9 SDK
+- .NET 8 SDK
 - Docker
 
 ## ⚙️ Installation
