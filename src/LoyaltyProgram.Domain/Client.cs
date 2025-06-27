@@ -9,4 +9,5 @@ public class Client
     public string? PhoneNumber { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime? DateCreated { get; set; }
+    public LoyaltyCard? LoyaltyCard { get; set; }
 }

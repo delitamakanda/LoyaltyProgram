@@ -7,6 +7,7 @@ public class Transaction
     public decimal Amount { get; set; }
     public int AwardedPoints { get; set; }
     public string? TransactionType { get; set; }
+    public Shop? Shop { get; set; }
 }
 
 enum TransactionType

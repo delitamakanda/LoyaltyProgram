@@ -7,4 +7,5 @@ public class LoyaltyCard
     public int Points { get; set; }
     public DateTime DateCreated { get; set; }
     public string? Status { get; set; }
+    public List<Transaction>? Transactions { get; set; }
 }
