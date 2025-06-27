@@ -16,7 +16,7 @@ Stack moderne : .NET 8, Docker, PostgreSQL.
 ## ⚙️ Installation
 Clone du projet :
 ```bash
-git clone <repo-url>
+git clone git@github.com:delitamakanda/LoyaltyProgram.git
 cd LoyaltyProgram.Api
 ```
 
@@ -44,10 +44,10 @@ dotnet ef database update --project LoyaltyProgram.Api```
 ```rust
 src/
 ├─ LoyaltyProgram.Api/           --> Projet API principal
-│    ├─ Models/                  --> Entités métier
-│    ├─ Data/                    --> DbContext + Migrations
-│    ├─ Program.cs               --> Bootstrap API
 │    └─ appsettings.json         --> Configurations (connexions, logs)
+├─ LoyaltyProgram.Domain/        --> Entitées
+├─ LoyaltyProgram.Application/   --> Logique Métier
+├─ LoyaltyProgram.Infrastructure/--> Gestion des migrations
 tests/
 └─ LoyaltyProgram.Tests/         --> Tests unitaires et d'intégration
 ```
