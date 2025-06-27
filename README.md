@@ -38,7 +38,8 @@ dotnet ef migrations add NomMigration --project LoyaltyProgram.Api
 
 Appliquer la migration :
 ```bash
-dotnet ef database update --project LoyaltyProgram.Api```
+dotnet ef database update --project LoyaltyProgram.Api
+```
 
 ## 📁 Structure du Projet
 ```rust
