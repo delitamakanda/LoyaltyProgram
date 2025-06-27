@@ -64,5 +64,7 @@ dotnet test
 ## 📝 TODO Évolutions
 - Gestion des récompenses (modèle + endpoints)
 - Historique des transactions et points
+- Notifications ou alertes lors du franchissement de seuils de points
+- Validité limitée dans le temps des récompenses
 - Système de statuts (VIP, Silver, Gold...)
 - Sécurisation par Authentification (JWT)
