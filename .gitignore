@@ -52,3 +52,30 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+.DS_Store
+.vscode/
+
+# Local History for Visual Studio
+.localhistory/
+
+# Visual Studio Code settings
+.vscode/settings.json
+
+# Visual Studio Code task settings
+.vscode/tasks.json
+
+# Visual Studio Code launch settings
+.vscode/launch.json
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+
+# Visual Studio 2017 auto-generated files
+Generated\ Files/
+
+# Visual Studio 2019 auto-generated files
+*.bim.mem
+*.bim_*.settings
+*.pvtuser
+*.pvtlayout
