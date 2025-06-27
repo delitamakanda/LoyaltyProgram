@@ -39,3 +39,9 @@ dotnet ef migrations remove --project src/LoyaltyProgram.Api --startup-project s
 ```bash
 dotnet ef migrations script --project src/LoyaltyProgram.Api --startup-project src/LoyaltyProgram.Api
 ```
+
+
+## Reference package
+```bash
+dotnet add src/LoyaltyProgram.Application/LoyaltyProgram.Application.csproj reference src/LoyaltyProgram.Domain/LoyaltyProgram.Domain.csproj
+```
