@@ -8,6 +8,12 @@ services:
       - db
     environment:
       - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=loyalty;Username=postgres;Password=pwd123456
+      - Logging__LogLevel__Default=Information
+      - Logging__LogLevel__Microsoft=Warning
+      - Logging__LogLevel__Microsoft.EntityFrameworkCore.Database.Command=Information
+    networks:
+      - loyalty-network
 
   db:
     image: postgres:15
@@ -17,3 +23,15 @@ services:
       POSTGRES_DB: loyalty
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
+    networks:
+      - loyalty-network
+
+volumes:
+  postgres_data:
+
+networks:
+  loyalty-network:
+    driver: bridge
