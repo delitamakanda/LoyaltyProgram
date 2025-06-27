@@ -3,6 +3,9 @@
 API de gestion d'un programme de fidélité client.
 Stack moderne : .NET 9, Docker, PostgreSQL.
 
+[![.NET](https://github.com/delitamakanda/LoyaltyProgram/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/delitamakanda/LoyaltyProgram/actions/workflows/ci.yml)
+![version](https://img.shields.io/badge/dotnet%20version-net9.0-blue)
+
 
 ## 📦 Fonctionnalités
 - ✅ Gestion des clients et des boutiques
