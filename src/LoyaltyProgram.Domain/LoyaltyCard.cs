@@ -6,6 +6,13 @@ public class LoyaltyCard
     public string? CardNumber { get; set; }
     public int Points { get; set; }
     public DateTime DateCreated { get; set; }
-    public string? Status { get; set; }
+    public LoyaltyCardStatus Status { get; set; }
     public List<Transaction>? Transactions { get; set; }
+}
+
+public enum LoyaltyCardStatus 
+{
+    Active,
+    Inactive,
+    Expired
 }
