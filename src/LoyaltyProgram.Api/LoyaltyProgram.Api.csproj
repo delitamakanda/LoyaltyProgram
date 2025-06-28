@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LoyaltyProgram.Domain\LoyaltyProgram.Domain.csproj" />
     <ProjectReference Include="..\LoyaltyProgram.Infrastructure\LoyaltyProgram.Infrastructure.csproj" />
+    <ProjectReference Include="..\LoyaltyProgram.Application\LoyaltyProgram.Application.csproj" />
   </ItemGroup>
 
 </Project>
