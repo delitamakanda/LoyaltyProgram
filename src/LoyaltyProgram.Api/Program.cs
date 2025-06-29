@@ -21,6 +21,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<LoyaltyProgramService>();
 builder.Services.AddScoped<ShopService>();
+builder.Services.AddScoped<LoyaltyCardService>();
 
 
 // Add services to the container.
