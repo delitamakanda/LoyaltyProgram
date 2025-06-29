@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LoyaltyProgram.Api.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    [Migration("20250627203610_InitialCreate")]
+    [Migration("20250629211929_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -29,38 +29,48 @@ namespace LoyaltyProgram.Api.Migrations
                 {
                     b.Property<int>("ClientId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ClientId"));
 
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Address")
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "address");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("timestamp with time zone")
+                        .HasAnnotation("Relational:JsonPropertyName", "date_created");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "email");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "first_name");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "last_name");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "phone_number");
 
                     b.HasKey("ClientId");
 
                     b.ToTable("Clients");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "client");
                 });
 
             modelBuilder.Entity("HistoryReward", b =>
                 {
                     b.Property<int>("HistoryRewardId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("HistoryRewardId"));
 
@@ -68,7 +78,12 @@ namespace LoyaltyProgram.Api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasAnnotation("Relational:JsonPropertyName", "created_date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "description");
 
                     b.Property<int?>("RewardId")
                         .HasColumnType("integer");
@@ -86,90 +101,121 @@ namespace LoyaltyProgram.Api.Migrations
                 {
                     b.Property<int>("LoyaltyCardId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LoyaltyCardId"));
 
                     b.Property<string>("CardNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "card_number");
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasAnnotation("Relational:JsonPropertyName", "date_created");
 
                     b.Property<int>("Points")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "points");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "status");
 
                     b.Property<int?>("clientId")
                         .HasColumnType("integer");
 
                     b.HasKey("LoyaltyCardId");
 
+                    b.HasIndex("ClientId");
+
                     b.HasIndex("clientId")
                         .IsUnique();
 
                     b.ToTable("LoyaltyCards");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "loyalty_card");
                 });
 
             modelBuilder.Entity("LoyaltyProgram.Domain.Shop", b =>
                 {
                     b.Property<int>("ShopId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ShopId"));
 
                     b.Property<string>("Address")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "address");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "name");
 
                     b.HasKey("ShopId");
 
                     b.ToTable("Shops");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "shop");
                 });
 
             modelBuilder.Entity("Reward", b =>
                 {
                     b.Property<int>("RewardId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RewardId"));
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasAnnotation("Relational:JsonPropertyName", "created_date");
+
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "description");
 
                     b.Property<decimal>("PointsNeeded")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasAnnotation("Relational:JsonPropertyName", "points_needed");
 
                     b.Property<int>("Stock")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "stock");
 
                     b.HasKey("RewardId");
 
                     b.ToTable("Rewards");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "reward");
                 });
 
             modelBuilder.Entity("Transaction", b =>
                 {
                     b.Property<int>("TransactionId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TransactionId"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasAnnotation("Relational:JsonPropertyName", "amount");
 
                     b.Property<int>("AwardedPoints")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "points_awarded");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasAnnotation("Relational:JsonPropertyName", "created_at");
 
                     b.Property<int?>("LoyaltyCardId")
                         .HasColumnType("integer");
@@ -177,8 +223,9 @@ namespace LoyaltyProgram.Api.Migrations
                     b.Property<int?>("ShopId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("TransactionType")
-                        .HasColumnType("text");
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "transaction_type");
 
                     b.HasKey("TransactionId");
 
@@ -187,6 +234,8 @@ namespace LoyaltyProgram.Api.Migrations
                     b.HasIndex("ShopId");
 
                     b.ToTable("Transactions");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "transactions");
                 });
 
             modelBuilder.Entity("HistoryReward", b =>
@@ -206,9 +255,15 @@ namespace LoyaltyProgram.Api.Migrations
 
             modelBuilder.Entity("LoyaltyCard", b =>
                 {
+                    b.HasOne("Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
+
                     b.HasOne("Client", null)
                         .WithOne("LoyaltyCard")
                         .HasForeignKey("LoyaltyCard", "clientId");
+
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("Transaction", b =>

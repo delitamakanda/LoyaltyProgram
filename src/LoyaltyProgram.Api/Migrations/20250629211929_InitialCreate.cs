@@ -20,9 +20,9 @@ namespace LoyaltyProgram.Api.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -36,6 +36,7 @@ namespace LoyaltyProgram.Api.Migrations
                 {
                     RewardId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     PointsNeeded = table.Column<decimal>(type: "numeric", nullable: false),
                     Stock = table.Column<int>(type: "integer", nullable: false)
@@ -66,6 +67,7 @@ namespace LoyaltyProgram.Api.Migrations
                     LoyaltyCardId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CardNumber = table.Column<string>(type: "text", nullable: true),
+                    ClientId = table.Column<int>(type: "integer", nullable: true),
                     Points = table.Column<int>(type: "integer", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
@@ -74,6 +76,11 @@ namespace LoyaltyProgram.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LoyaltyCards", x => x.LoyaltyCardId);
+                    table.ForeignKey(
+                        name: "FK_LoyaltyCards_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "ClientId");
                     table.ForeignKey(
                         name: "FK_LoyaltyCards_Clients_clientId",
                         column: x => x.clientId,
@@ -88,6 +95,7 @@ namespace LoyaltyProgram.Api.Migrations
                     HistoryRewardId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     RewardId = table.Column<int>(type: "integer", nullable: true),
                     ClientId = table.Column<int>(type: "integer", nullable: true)
                 },
@@ -115,7 +123,7 @@ namespace LoyaltyProgram.Api.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
                     AwardedPoints = table.Column<int>(type: "integer", nullable: false),
-                    TransactionType = table.Column<string>(type: "text", nullable: true),
+                    TransactionType = table.Column<int>(type: "integer", nullable: false),
                     ShopId = table.Column<int>(type: "integer", nullable: true),
                     LoyaltyCardId = table.Column<int>(type: "integer", nullable: true)
                 },
@@ -149,6 +157,11 @@ namespace LoyaltyProgram.Api.Migrations
                 table: "LoyaltyCards",
                 column: "clientId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoyaltyCards_ClientId",
+                table: "LoyaltyCards",
+                column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_LoyaltyCardId",

@@ -39,10 +39,6 @@ namespace LoyaltyProgram.Api.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasAnnotation("Relational:JsonPropertyName", "date_created");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("timestamp with time zone")
-                        .HasAnnotation("Relational:JsonPropertyName", "date_of_birth");
-
                     b.Property<string>("Email")
                         .HasColumnType("text")
                         .HasAnnotation("Relational:JsonPropertyName", "email");
@@ -224,8 +220,8 @@ namespace LoyaltyProgram.Api.Migrations
                     b.Property<int?>("ShopId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("TransactionType")
-                        .HasColumnType("text")
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("integer")
                         .HasAnnotation("Relational:JsonPropertyName", "transaction_type");
 
                     b.HasKey("TransactionId");
