@@ -1,12 +1,19 @@
+using System.Text.Json.Serialization;
 using LoyaltyProgram.Domain;
 
 public class Transaction
 {
+    [JsonPropertyName("id")]
     public int TransactionId { get; set; }
+    [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; set; }
+    [JsonPropertyName("amount")]
     public decimal Amount { get; set; }
+    [JsonPropertyName("points_awarded")]
     public int AwardedPoints { get; set; }
+    [JsonPropertyName("transaction_type")]
     public string? TransactionType { get; set; }
+    [JsonPropertyName("shop")]
     public Shop? Shop { get; set; }
 }
 

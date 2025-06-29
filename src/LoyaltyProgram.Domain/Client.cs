@@ -3,7 +3,7 @@ using LoyaltyProgram.Domain;
 
 public class Client
 {
-    [JsonPropertyName("client_id")]
+    [JsonPropertyName("id")]
     public int ClientId { get; set; }
     [JsonPropertyName("first_name")]
     public string? FirstName { get; set; }
