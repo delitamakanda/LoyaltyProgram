@@ -1,4 +1,4 @@
-##  Builder l'image
+# Builder l'image
 
 ```bash
 docker build -t loyalty-api .
@@ -15,7 +15,7 @@ docker run -p 5000:5000 loyalty-api
 docker-compose up --build
 ```
 
-Tu peux ensuite accéder à ton API via http://localhost:5000
+Tu peux ensuite accéder à ton API via <http://localhost:5000>
 
 ## Créer une nouvelle migration
 
@@ -46,7 +46,6 @@ dotnet ef migrations remove --project src/LoyaltyProgram.Api --startup-project s
 ```bash
 dotnet ef migrations script --project src/LoyaltyProgram.Api --startup-project src/LoyaltyProgram.Api
 ```
-
 
 ## Reference package
 
