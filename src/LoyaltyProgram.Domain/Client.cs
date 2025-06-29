@@ -15,10 +15,13 @@ public class Client
     public string? Email { get; set; }
     [JsonPropertyName("phone_number")]
     public string? PhoneNumber { get; set; }
-    [JsonPropertyName("date_of_birth")]
-    public DateTime DateOfBirth { get; set; }
     [JsonPropertyName("date_created")]
     public DateTime? DateCreated { get; set; }
     [JsonPropertyName("loyalty_card")]
     public LoyaltyCard? LoyaltyCard { get; set; }
+
+    public void Register(string cardNumber, LoyaltyCardStatus status, Client client)
+    {
+        LoyaltyCard = new LoyaltyCard { CardNumber = cardNumber, Client = client, Status = status, Points = 0, DateCreated = DateTime.UtcNow };
+    }
 }
