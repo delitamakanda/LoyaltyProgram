@@ -1,28 +1,21 @@
 using LoyaltyProgram.Application;
 using LoyaltyProgram.Domain;
+using LoyaltyProgram.Infrastructure;
 
-public class LoyaltyProgramService
+namespace LoyaltyProgram.Application
 {
-    private readonly ClientService _clientService;
-
-    public LoyaltyProgramService(ClientService clientService)
+    public class LoyaltyProgramService
     {
-        _clientService = clientService;
-    }
-
-    public void RegisterClient(string firstName, string lastName, string email, string phoneNumber, DateTime dateOfBirth)
-    {
-        var client = new Client
+        private readonly LoyaltyDbContext _context;
+        public LoyaltyProgramService(LoyaltyDbContext context)
         {
-            FirstName = firstName,
-            LastName = lastName,
-            Email = email,
-            PhoneNumber = phoneNumber,
-            DateOfBirth = dateOfBirth,
-            DateCreated = DateTime.Now
-        };
-
-        _clientService.RegisterClient(client);
+            _context = context;
+        }
+        public void AddLoyaltyCard(LoyaltyCard loyaltyCard)
+        {
+            _context.LoyaltyCards.Add(loyaltyCard);
+            _context.SaveChanges();
+        }
+        
     }
-    
 }

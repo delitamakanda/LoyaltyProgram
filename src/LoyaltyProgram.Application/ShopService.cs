@@ -1,0 +1,41 @@
+using LoyaltyProgram.Domain;
+using LoyaltyProgram.Infrastructure;
+
+namespace LoyaltyProgram.Application
+{
+    public class ShopService
+    {
+        private readonly LoyaltyDbContext _context;
+        public ShopService(LoyaltyDbContext context)
+        {
+            _context = context;
+        }
+        public void AddShop(Shop shop)
+        {
+            _context.Shops.Add(shop);
+            _context.SaveChanges();
+        }
+        public Shop? GetShopById(int id)
+        {
+            return _context.Shops.Find(id);
+        }
+        public void UpdateShop(Shop shop)
+        {
+            _context.Shops.Update(shop);
+            _context.SaveChanges();
+        }
+        public void DeleteShop(int id)
+        {
+            var shop = _context.Shops.Find(id);
+            if (shop != null)
+            {
+                _context.Shops.Remove(shop);
+                _context.SaveChanges();
+            }
+        }
+        public List<Shop> GetShops()
+        {
+            return _context.Shops.ToList();
+        }
+    }
+}
