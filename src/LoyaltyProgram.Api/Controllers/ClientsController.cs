@@ -24,5 +24,18 @@ namespace LoyaltyProgram.Api.Controllers
         {
             return await _context.Clients.ToListAsync();
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Client>> GetClient(int id)
+        {
+            var client = await _context.Clients.FindAsync(id);
+
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            return client;
+        }
     }
 }
