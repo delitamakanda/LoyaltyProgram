@@ -12,12 +12,12 @@ public class Transaction
     [JsonPropertyName("points_awarded")]
     public int AwardedPoints { get; set; }
     [JsonPropertyName("transaction_type")]
-    public string? TransactionType { get; set; }
+    public TransactionType TransactionType { get; set; }
     [JsonPropertyName("shop")]
     public Shop? Shop { get; set; }
 }
 
-enum TransactionType
+public enum TransactionType
 {
     Purchase,
     Reward,
