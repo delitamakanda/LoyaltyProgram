@@ -10,6 +10,8 @@ namespace LoyaltyProgram.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     public class ClientsController : ControllerBase
     {
         private readonly LoyaltyDbContext _context;
