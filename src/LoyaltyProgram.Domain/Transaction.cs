@@ -12,7 +12,7 @@ public class Transaction
     [JsonPropertyName("points_awarded")]
     public int AwardedPoints { get; set; }
     [JsonPropertyName("transaction_type")]
-    public TransactionType TransactionType { get; set; }
+    public TransactionType TransactionType { get; set; } = TransactionType.Purchase;
     [JsonPropertyName("shop")]
     public Shop? Shop { get; set; }
 }
