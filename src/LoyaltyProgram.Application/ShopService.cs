@@ -38,7 +38,7 @@ namespace LoyaltyProgram.Application
             return _context.Shops.ToList();
         }
 
-        private static RankStatus CalculateRank(int points, Shop shop)
+        public static RankStatus CalculateRank(int? points, Shop shop)
         {
             var paramsRank = shop.RankSystem.OrderBy(p => p.PointsNeeded).ToList();
 

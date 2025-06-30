@@ -6,10 +6,12 @@ namespace LoyaltyProgram.Application
     public class LoyaltyCardService
     {
         private readonly LoyaltyDbContext _context;
+        private readonly LoyaltyProgramService _programService;
 
-        public LoyaltyCardService(LoyaltyDbContext context)
+        public LoyaltyCardService(LoyaltyDbContext context, LoyaltyProgramService programService)
         {
             _context = context;
+            _programService = programService;
         }
 
         public LoyaltyCard? GetLoyaltyCardByCardNumber(string cardNumber)
@@ -42,6 +44,7 @@ namespace LoyaltyProgram.Application
             {
                 transaction.DateExpirationPoints = GetDateExpirationPoints(DateTime.UtcNow);
                 loyaltyCard.AddTransaction(transaction);
+                _programService.AddTransaction(transaction);
                 _context.SaveChanges();
             }
         }
