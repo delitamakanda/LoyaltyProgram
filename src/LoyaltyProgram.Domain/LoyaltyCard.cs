@@ -19,6 +19,8 @@ public class LoyaltyCard
     public LoyaltyCardStatus Status { get; set; }
     [JsonPropertyName("transactions")]
     public List<Transaction>? Transactions { get; set; } = new List<Transaction>();
+    [JsonPropertyName("rank")]
+    public RankStatus Rank { get; set; } = RankStatus.Basic;
 
     public void UpdatePoints(int points)
     {
@@ -38,8 +40,16 @@ public class LoyaltyCard
 }
 
 public enum LoyaltyCardStatus
+    {
+        Active,
+        Inactive,
+        Expired
+    }
+
+public enum RankStatus
 {
-    Active,
-    Inactive,
-    Expired
+    Basic,
+    Silver,
+    Gold,
+    Platinum
 }

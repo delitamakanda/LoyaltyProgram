@@ -25,6 +25,10 @@ namespace LoyaltyProgram.Infrastructure
             .HasForeignKey<LoyaltyCard>("clientId");
 
             modelBuilder.Entity<LoyaltyCard>()
+            .Property(c => c.Rank)
+            .HasConversion<string>();
+
+            modelBuilder.Entity<LoyaltyCard>()
             .HasMany(c => c.Transactions)
             .WithOne();
 
