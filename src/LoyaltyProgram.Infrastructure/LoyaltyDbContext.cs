@@ -37,5 +37,6 @@ namespace LoyaltyProgram.Infrastructure
             modelBuilder.Entity<HistoryReward>()
             .HasOne(hr => hr.Client);
         }
-    
+
     }
+}
