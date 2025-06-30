@@ -28,5 +28,21 @@ namespace LoyaltyProgram.Application
         {
             return _context.LoyaltyCards.ToList();
         }
+
+        public List<Transaction> GetTransactionsByLoyaltyCardNumber(string loyaltyCardNumber)
+        {
+            var loyaltyCard = _context.LoyaltyCards.FirstOrDefault(card => card.CardNumber == loyaltyCardNumber);
+            return loyaltyCard?.Transactions ?? new List<Transaction>();
+        }
+
+        public void AddTransactionToLoyaltyCard(string loyaltyCardNumber, Transaction transaction)
+        {
+            var loyaltyCard = _context.LoyaltyCards.FirstOrDefault(card => card.CardNumber == loyaltyCardNumber);
+            if (loyaltyCard != null)
+            {
+                loyaltyCard.AddTransaction(transaction);
+                _context.SaveChanges();
+            }
+        }
     }
 }

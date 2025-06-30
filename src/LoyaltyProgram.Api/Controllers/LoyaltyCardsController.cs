@@ -18,7 +18,7 @@ namespace LoyaltyProgram.Api.Controllers
         }
 
         [HttpGet("{card_number}")]
-        public ActionResult<LoyaltyCard> GetLoyaltyCardByCardNumber([FromRoute(Name="card_number")] string cardNumber)
+        public ActionResult<LoyaltyCard> GetLoyaltyCardByCardNumber([FromRoute(Name = "card_number")] string cardNumber)
         {
             var loyaltyCard = _loyaltyCardService.GetLoyaltyCardByCardNumber(cardNumber);
             if (loyaltyCard == null)
@@ -29,7 +29,7 @@ namespace LoyaltyProgram.Api.Controllers
         }
 
         [HttpPut("{card_number}")]
-        public ActionResult<LoyaltyCard> UpdateLoyaltyCard([FromRoute(Name="card_number")] string cardNumber, LoyaltyCard loyaltyCard)
+        public ActionResult<LoyaltyCard> UpdateLoyaltyCard([FromRoute(Name = "card_number")] string cardNumber, LoyaltyCard loyaltyCard)
         {
             if (cardNumber != loyaltyCard.CardNumber)
             {
@@ -44,6 +44,20 @@ namespace LoyaltyProgram.Api.Controllers
         {
             var loyaltyCards = _loyaltyCardService.GetLoyaltyCards();
             return Ok(loyaltyCards);
+        }
+
+        [HttpGet("{card_number}/transactions")]
+        public ActionResult<List<Transaction>> GetTransactionsByLoyaltyCardNumber([FromRoute(Name = "card_number")] string loyaltyCardNumber)
+        {
+            var transactions = _loyaltyCardService.GetTransactionsByLoyaltyCardNumber(loyaltyCardNumber);
+            return Ok(transactions);
+        }
+
+        [HttpPost("{card_number}/transactions")]
+        public ActionResult<LoyaltyCard> AddTransactionToLoyaltyCard([FromRoute(Name = "card_number")] string loyaltyCardNumber, Transaction transaction)
+        { 
+            _loyaltyCardService.AddTransactionToLoyaltyCard(loyaltyCardNumber, transaction);
+            return Ok(transaction);
         }
     }
 }
