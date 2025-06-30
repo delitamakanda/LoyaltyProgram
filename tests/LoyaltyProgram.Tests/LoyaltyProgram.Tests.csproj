@@ -14,10 +14,18 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LoyaltyProgram.Application\LoyaltyProgram.Application.csproj" />
+    <ProjectReference Include="..\..\src\LoyaltyProgram.Infrastructure\LoyaltyProgram.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\LoyaltyProgram.Domain\LoyaltyProgram.Domain.csproj" />
+    <ProjectReference Include="..\..\src\LoyaltyProgram.Api\LoyaltyProgram.Api.csproj" />
   </ItemGroup>
 
 </Project>
