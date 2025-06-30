@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
 using LoyaltyProgram.Domain;
 
+namespace LoyaltyProgram.Domain;
+
 public class Client
 {
     [JsonPropertyName("id")]
