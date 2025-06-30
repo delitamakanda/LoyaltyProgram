@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using LoyaltyProgram.Domain;
 using LoyaltyProgram.Infrastructure;
 
@@ -55,7 +56,7 @@ namespace LoyaltyProgram.Application
         }
         static string GenerateCardNumber()
         {
-            return "LOYALTY-" + new Random().Next(100000, 999999);
+            return $"LOYALTY-{Guid.NewGuid():N}";
         }
     }
 }
