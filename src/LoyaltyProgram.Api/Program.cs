@@ -22,6 +22,7 @@ builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<LoyaltyProgramService>();
 builder.Services.AddScoped<ShopService>();
 builder.Services.AddScoped<LoyaltyCardService>();
+builder.Services.AddScoped<RewardService>();
 
 
 // Add services to the container.
