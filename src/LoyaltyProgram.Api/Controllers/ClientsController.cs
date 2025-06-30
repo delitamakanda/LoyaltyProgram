@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using LoyaltyProgram.Application;
+using LoyaltyProgram.Domain;
 
 namespace LoyaltyProgram.Api.Controllers
 {

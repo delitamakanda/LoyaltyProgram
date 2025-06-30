@@ -1,4 +1,5 @@
 using LoyaltyProgram.Infrastructure;
+using LoyaltyProgram.Domain;
 
 namespace LoyaltyProgram.Application
 {
