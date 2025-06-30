@@ -37,7 +37,7 @@ public class LoyaltyCard
     }
 }
 
-public enum LoyaltyCardStatus 
+public enum LoyaltyCardStatus
 {
     Active,
     Inactive,

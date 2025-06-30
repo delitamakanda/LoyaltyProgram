@@ -16,6 +16,6 @@ namespace LoyaltyProgram.Application
             _context.LoyaltyCards.Add(loyaltyCard);
             _context.SaveChanges();
         }
-        
+
     }
 }
