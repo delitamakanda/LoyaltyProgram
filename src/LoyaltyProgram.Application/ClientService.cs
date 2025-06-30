@@ -56,7 +56,9 @@ namespace LoyaltyProgram.Application
         }
         static string GenerateCardNumber()
         {
-            return $"LOYALTY-{Guid.NewGuid():N}";
+            var prefix = new Random().Next(1000, 9999).ToString();
+            var uniqueSuffix = Guid.NewGuid().ToString("N").Substring(6, 6);;
+            return $"LOYALTY-{prefix}-{uniqueSuffix}";
         }
     }
 }
