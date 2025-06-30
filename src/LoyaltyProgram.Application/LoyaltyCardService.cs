@@ -40,9 +40,15 @@ namespace LoyaltyProgram.Application
             var loyaltyCard = _context.LoyaltyCards.FirstOrDefault(card => card.CardNumber == loyaltyCardNumber);
             if (loyaltyCard != null)
             {
+                transaction.DateExpirationPoints = GetDateExpirationPoints(DateTime.UtcNow);
                 loyaltyCard.AddTransaction(transaction);
                 _context.SaveChanges();
             }
+        }
+
+        public static DateTime GetDateExpirationPoints(DateTime createdAt)
+        {
+            return createdAt.AddMonths(12);
         }
     }
 }

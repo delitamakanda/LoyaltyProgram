@@ -37,6 +37,16 @@ public class LoyaltyCard
     {
         return Points >= reward.PointsNeeded;
     }
+
+    public int GetValidPoints()
+    {
+        if (Transactions == null)
+        {
+            return 0;
+        }
+        var currentDate = DateTime.UtcNow;
+        return Transactions.Where(t => t.DateExpirationPoints == null || t.DateExpirationPoints > currentDate).Sum(t => t.AwardedPoints);
+    }
 }
 
 public enum LoyaltyCardStatus

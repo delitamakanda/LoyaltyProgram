@@ -17,6 +17,13 @@ public class Transaction
     public TransactionType TransactionType { get; set; } = TransactionType.Purchase;
     [JsonPropertyName("shop")]
     public Shop? Shop { get; set; }
+
+    [JsonPropertyName("loyalty_card")]
+    public LoyaltyCard? LoyaltyCard { get; set; }
+    [JsonPropertyName("date_expiration_points")]
+    public DateTime? DateExpirationPoints { get; set; }
+    [JsonPropertyName("loyalty_card_id")]
+    public string? LoyaltyCardId { get; set; }
 }
 
 public enum TransactionType
