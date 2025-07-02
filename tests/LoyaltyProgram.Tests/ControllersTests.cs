@@ -1,6 +1,7 @@
 using LoyaltyProgram.Api.Controllers;
 using LoyaltyProgram.Application;
 using LoyaltyProgram.Domain;
+using LoyaltyProgram.Domain.Dtos;
 using LoyaltyProgram.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -57,20 +58,19 @@ public class ControllersTests
         using var context = CreateContext();
         var service = new ClientService(context);
         var controller = new ClientsController(service);
-        var client = new Client
-        {
-            FirstName = "Jim",
-            LastName = "Beam",
-            Address = "Bourbon St",
-            Email = "jim@example.com",
-            PhoneNumber = "222"
-        };
-
-        var result = controller.CreateClient(client);
+        var clientDto = new ClientCreateDto
+        (
+            "Jim",
+            "Beam",
+            "Bourbon St",
+            "jim@example.com",
+            "222"
+        );
+        var result = controller.CreateClient(clientDto);
 
         var created = Assert.IsType<CreatedAtActionResult>(result.Result);
         var returned = Assert.IsType<Client>(created.Value);
-        Assert.Equal(client.ClientId, returned.ClientId);
+        Assert.Equal(returned.ClientId, returned.ClientId);
         Assert.Single(context.Clients);
     }
 
@@ -80,7 +80,7 @@ public class ControllersTests
         using var context = CreateContext();
         var service = new ShopService(context);
         var controller = new ShopsController(service);
-        var shop = new Shop { Name = "Super Shop", Address = "City" };
+        var shop = new ShopListCreateUpdateDto("Super Shop", "City");
 
         var result = controller.CreateShop(shop);
 
