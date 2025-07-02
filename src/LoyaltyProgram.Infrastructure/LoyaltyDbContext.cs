@@ -15,6 +15,7 @@ namespace LoyaltyProgram.Infrastructure
         public DbSet<HistoryReward> HistoryRewards { get; set; }
         public DbSet<Reward> Rewards { get; set; }
         public DbSet<RankSystem> RankSystems { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
