@@ -11,8 +11,12 @@ public class HistoryReward
     public DateTime CreatedDate { get; set; }
     [JsonPropertyName("description")]
     public string? Description { get; set; }
+    [JsonPropertyName("reward_id")]
+    public int RewardId { get; set; }
     [JsonPropertyName("reward")]
     public Reward? Reward { get; set; }
+    [JsonPropertyName("client_id")]
+    public int ClientId { get; set; }
     [JsonPropertyName("client")]
     public Client? Client { get; set; }
 }
