@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LoyaltyProgram.Application;
 using LoyaltyProgram.Domain;
+using LoyaltyProgram.Domain.Dtos;
 
 namespace LoyaltyProgram.Api.Controllers
 {
@@ -25,16 +26,29 @@ namespace LoyaltyProgram.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(loyaltyCard);
+            var loyaltyCardDto = new LoyaltyCardListDto(
+                loyaltyCard.LoyaltyCardId,
+                loyaltyCard.CardNumber ?? string.Empty,
+                loyaltyCard.Points,
+                loyaltyCard.DateCreated,
+                loyaltyCard.Status,
+                loyaltyCard.Rank
+            );
+            return Ok(loyaltyCardDto);
         }
 
         [HttpPut("{card_number}")]
-        public ActionResult<LoyaltyCard> UpdateLoyaltyCard([FromRoute(Name = "card_number")] string cardNumber, LoyaltyCard loyaltyCard)
+        public ActionResult<LoyaltyCard> UpdateLoyaltyCard([FromRoute(Name = "card_number")] string cardNumber, LoyaltyCardUpdatetDto loyaltyCardUpdateDto)
         {
-            if (cardNumber != loyaltyCard.CardNumber)
+            var loyaltyCard = _loyaltyCardService.GetLoyaltyCardByCardNumber(cardNumber);
+            if (loyaltyCard == null)
             {
-                return BadRequest();
+                return NotFound();
             }
+            loyaltyCard.CardNumber = loyaltyCardUpdateDto.CardNumber;
+            loyaltyCard.Points = loyaltyCardUpdateDto.Points;
+            loyaltyCard.Status = loyaltyCardUpdateDto.Status;
+            loyaltyCard.Rank = loyaltyCardUpdateDto.Rank;
             _loyaltyCardService.UpdateLoyaltyCard(loyaltyCard);
             return Ok(loyaltyCard);
         }
@@ -43,7 +57,15 @@ namespace LoyaltyProgram.Api.Controllers
         public ActionResult<List<LoyaltyCard>> GetLoyaltyCards()
         {
             var loyaltyCards = _loyaltyCardService.GetLoyaltyCards();
-            return Ok(loyaltyCards);
+            var loyaltyCardsDto = loyaltyCards.Select(card => new LoyaltyCardListDto(
+                card.LoyaltyCardId,
+                card.CardNumber?? string.Empty,
+                card.Points,
+                card.DateCreated,
+                card.Status,
+                card.Rank
+            ));
+            return Ok(loyaltyCardsDto);
         }
 
         [HttpGet("{card_number}/transactions")]
@@ -54,7 +76,7 @@ namespace LoyaltyProgram.Api.Controllers
         }
 
         [HttpPost("{card_number}/transactions")]
-        public ActionResult<LoyaltyCard> AddTransactionToLoyaltyCard([FromRoute(Name = "card_number")] string loyaltyCardNumber, Transaction transaction)
+        public ActionResult<Transaction> AddTransactionToLoyaltyCard([FromRoute(Name = "card_number")] string loyaltyCardNumber, Transaction transaction)
         { 
             _loyaltyCardService.AddTransactionToLoyaltyCard(loyaltyCardNumber, transaction);
             return Ok(transaction);

@@ -38,6 +38,11 @@ namespace LoyaltyProgram.Application
             return _context.Shops.ToList();
         }
 
+        public List<RankSystem> GetShopRankSystem(int shopId)
+        {
+            return _context.RankSystems.Where(rs => rs.ShopId == shopId).ToList();
+        }
+
         public static RankStatus CalculateRank(int? points, Shop shop)
         {
             var paramsRank = shop.RankSystem.OrderBy(p => p.PointsNeeded).ToList();

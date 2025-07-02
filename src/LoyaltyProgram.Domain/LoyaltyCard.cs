@@ -10,7 +10,7 @@ public class LoyaltyCard
     [JsonPropertyName("card_number")]
     public string? CardNumber { get; set; }
     [JsonPropertyName("client")]
-    public Client? Client { get; set; } = new Client();
+    public Client? Client { get; set; }
     [JsonPropertyName("points")]
     public int Points { get; set; }
     [JsonPropertyName("date_created")]

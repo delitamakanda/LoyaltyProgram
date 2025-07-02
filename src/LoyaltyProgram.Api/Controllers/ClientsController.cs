@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LoyaltyProgram.Application;
 using LoyaltyProgram.Domain;
+using LoyaltyProgram.Domain.Dtos;
 
 namespace LoyaltyProgram.Api.Controllers
 {
@@ -36,11 +37,20 @@ namespace LoyaltyProgram.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Client> CreateClient(Client client)
+        public ActionResult<Client> CreateClient(ClientCreateDto clientCreateDto)
         {
-            _clientService.RegisterClient(client);
+            var newClient = new Client
+            {
+                FirstName = clientCreateDto.FirstName,
+                LastName = clientCreateDto.LastName,
+                Address = clientCreateDto.Address,
+                Email = clientCreateDto.Email,
+                PhoneNumber = clientCreateDto.PhoneNumber,
+                DateCreated = DateTime.UtcNow
+            };
+            _clientService.RegisterClient(newClient);
             // return just the created item and status code 201 Created
-            return CreatedAtAction(nameof(GetClient), new { id = client.ClientId }, client);
+            return CreatedAtAction(nameof(GetClient), new { id = newClient.ClientId }, newClient);
         }
 
         [HttpPut("{id}")]
