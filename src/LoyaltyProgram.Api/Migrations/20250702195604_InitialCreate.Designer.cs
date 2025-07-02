@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LoyaltyProgram.Api.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    [Migration("20250629211929_InitialCreate")]
+    [Migration("20250702195604_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace LoyaltyProgram.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Client", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.Client", b =>
                 {
                     b.Property<int>("ClientId")
                         .ValueGeneratedOnAdd()
@@ -65,7 +65,7 @@ namespace LoyaltyProgram.Api.Migrations
                     b.HasAnnotation("Relational:JsonPropertyName", "client");
                 });
 
-            modelBuilder.Entity("HistoryReward", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.HistoryReward", b =>
                 {
                     b.Property<int>("HistoryRewardId")
                         .ValueGeneratedOnAdd()
@@ -97,7 +97,7 @@ namespace LoyaltyProgram.Api.Migrations
                     b.ToTable("HistoryRewards");
                 });
 
-            modelBuilder.Entity("LoyaltyCard", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.LoyaltyCard", b =>
                 {
                     b.Property<int>("LoyaltyCardId")
                         .ValueGeneratedOnAdd()
@@ -121,8 +121,14 @@ namespace LoyaltyProgram.Api.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Relational:JsonPropertyName", "points");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
+                    b.Property<string>("Rank")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "rank");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasAnnotation("Relational:JsonPropertyName", "status");
 
                     b.Property<int?>("clientId")
@@ -140,31 +146,42 @@ namespace LoyaltyProgram.Api.Migrations
                     b.HasAnnotation("Relational:JsonPropertyName", "loyalty_card");
                 });
 
-            modelBuilder.Entity("LoyaltyProgram.Domain.Shop", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.RankSystem", b =>
                 {
-                    b.Property<int>("ShopId")
+                    b.Property<int>("RankSystemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Relational:JsonPropertyName", "id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ShopId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RankSystemId"));
 
-                    b.Property<string>("Address")
+                    b.Property<int>("PointsNeeded")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "points_needed");
+
+                    b.Property<string>("Rank")
+                        .IsRequired()
                         .HasColumnType("text")
-                        .HasAnnotation("Relational:JsonPropertyName", "address");
+                        .HasAnnotation("Relational:JsonPropertyName", "rank");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("RankDescription")
                         .HasColumnType("text")
-                        .HasAnnotation("Relational:JsonPropertyName", "name");
+                        .HasAnnotation("Relational:JsonPropertyName", "description");
 
-                    b.HasKey("ShopId");
+                    b.Property<int>("ShopId")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "shop_id");
 
-                    b.ToTable("Shops");
+                    b.HasKey("RankSystemId");
 
-                    b.HasAnnotation("Relational:JsonPropertyName", "shop");
+                    b.HasIndex("ShopId");
+
+                    b.ToTable("RankSystems");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "rank_system");
                 });
 
-            modelBuilder.Entity("Reward", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.Reward", b =>
                 {
                     b.Property<int>("RewardId")
                         .ValueGeneratedOnAdd()
@@ -196,7 +213,31 @@ namespace LoyaltyProgram.Api.Migrations
                     b.HasAnnotation("Relational:JsonPropertyName", "reward");
                 });
 
-            modelBuilder.Entity("Transaction", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.Shop", b =>
+                {
+                    b.Property<int>("ShopId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ShopId"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "address");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "name");
+
+                    b.HasKey("ShopId");
+
+                    b.ToTable("Shops");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "shop");
+                });
+
+            modelBuilder.Entity("LoyaltyProgram.Domain.Transaction", b =>
                 {
                     b.Property<int>("TransactionId")
                         .ValueGeneratedOnAdd()
@@ -217,19 +258,33 @@ namespace LoyaltyProgram.Api.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasAnnotation("Relational:JsonPropertyName", "created_at");
 
-                    b.Property<int?>("LoyaltyCardId")
+                    b.Property<DateTime?>("DateExpirationPoints")
+                        .HasColumnType("timestamp with time zone")
+                        .HasAnnotation("Relational:JsonPropertyName", "date_expiration_points");
+
+                    b.Property<string>("LoyaltyCardId")
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "loyalty_card_id");
+
+                    b.Property<int?>("LoyaltyCardId1")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LoyaltyCardId2")
                         .HasColumnType("integer");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("integer")
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasAnnotation("Relational:JsonPropertyName", "transaction_type");
 
                     b.HasKey("TransactionId");
 
-                    b.HasIndex("LoyaltyCardId");
+                    b.HasIndex("LoyaltyCardId1");
+
+                    b.HasIndex("LoyaltyCardId2");
 
                     b.HasIndex("ShopId");
 
@@ -238,13 +293,13 @@ namespace LoyaltyProgram.Api.Migrations
                     b.HasAnnotation("Relational:JsonPropertyName", "transactions");
                 });
 
-            modelBuilder.Entity("HistoryReward", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.HistoryReward", b =>
                 {
-                    b.HasOne("Client", "Client")
+                    b.HasOne("LoyaltyProgram.Domain.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
 
-                    b.HasOne("Reward", "Reward")
+                    b.HasOne("LoyaltyProgram.Domain.Reward", "Reward")
                         .WithMany()
                         .HasForeignKey("RewardId");
 
@@ -253,40 +308,62 @@ namespace LoyaltyProgram.Api.Migrations
                     b.Navigation("Reward");
                 });
 
-            modelBuilder.Entity("LoyaltyCard", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.LoyaltyCard", b =>
                 {
-                    b.HasOne("Client", "Client")
+                    b.HasOne("LoyaltyProgram.Domain.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
 
-                    b.HasOne("Client", null)
+                    b.HasOne("LoyaltyProgram.Domain.Client", null)
                         .WithOne("LoyaltyCard")
-                        .HasForeignKey("LoyaltyCard", "clientId");
+                        .HasForeignKey("LoyaltyProgram.Domain.LoyaltyCard", "clientId");
 
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("Transaction", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.RankSystem", b =>
                 {
-                    b.HasOne("LoyaltyCard", null)
+                    b.HasOne("LoyaltyProgram.Domain.Shop", "Shop")
+                        .WithMany("RankSystem")
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("LoyaltyProgram.Domain.Transaction", b =>
+                {
+                    b.HasOne("LoyaltyProgram.Domain.LoyaltyCard", null)
                         .WithMany("Transactions")
-                        .HasForeignKey("LoyaltyCardId");
+                        .HasForeignKey("LoyaltyCardId1");
+
+                    b.HasOne("LoyaltyProgram.Domain.LoyaltyCard", "LoyaltyCard")
+                        .WithMany()
+                        .HasForeignKey("LoyaltyCardId2");
 
                     b.HasOne("LoyaltyProgram.Domain.Shop", "Shop")
                         .WithMany()
                         .HasForeignKey("ShopId");
 
+                    b.Navigation("LoyaltyCard");
+
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("Client", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.Client", b =>
                 {
                     b.Navigation("LoyaltyCard");
                 });
 
-            modelBuilder.Entity("LoyaltyCard", b =>
+            modelBuilder.Entity("LoyaltyProgram.Domain.LoyaltyCard", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("LoyaltyProgram.Domain.Shop", b =>
+                {
+                    b.Navigation("RankSystem");
                 });
 #pragma warning restore 612, 618
         }

@@ -70,7 +70,8 @@ namespace LoyaltyProgram.Api.Migrations
                     ClientId = table.Column<int>(type: "integer", nullable: true),
                     Points = table.Column<int>(type: "integer", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    Rank = table.Column<string>(type: "text", nullable: false),
                     clientId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -115,6 +116,28 @@ namespace LoyaltyProgram.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RankSystems",
+                columns: table => new
+                {
+                    RankSystemId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ShopId = table.Column<int>(type: "integer", nullable: false),
+                    Rank = table.Column<string>(type: "text", nullable: false),
+                    PointsNeeded = table.Column<int>(type: "integer", nullable: false),
+                    RankDescription = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RankSystems", x => x.RankSystemId);
+                    table.ForeignKey(
+                        name: "FK_RankSystems_Shops_ShopId",
+                        column: x => x.ShopId,
+                        principalTable: "Shops",
+                        principalColumn: "ShopId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Transactions",
                 columns: table => new
                 {
@@ -123,16 +146,24 @@ namespace LoyaltyProgram.Api.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
                     AwardedPoints = table.Column<int>(type: "integer", nullable: false),
-                    TransactionType = table.Column<int>(type: "integer", nullable: false),
+                    TransactionType = table.Column<string>(type: "text", nullable: false),
                     ShopId = table.Column<int>(type: "integer", nullable: true),
-                    LoyaltyCardId = table.Column<int>(type: "integer", nullable: true)
+                    LoyaltyCardId2 = table.Column<int>(type: "integer", nullable: true),
+                    DateExpirationPoints = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LoyaltyCardId = table.Column<string>(type: "text", nullable: true),
+                    LoyaltyCardId1 = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.TransactionId);
                     table.ForeignKey(
-                        name: "FK_Transactions_LoyaltyCards_LoyaltyCardId",
-                        column: x => x.LoyaltyCardId,
+                        name: "FK_Transactions_LoyaltyCards_LoyaltyCardId1",
+                        column: x => x.LoyaltyCardId1,
+                        principalTable: "LoyaltyCards",
+                        principalColumn: "LoyaltyCardId");
+                    table.ForeignKey(
+                        name: "FK_Transactions_LoyaltyCards_LoyaltyCardId2",
+                        column: x => x.LoyaltyCardId2,
                         principalTable: "LoyaltyCards",
                         principalColumn: "LoyaltyCardId");
                     table.ForeignKey(
@@ -164,9 +195,19 @@ namespace LoyaltyProgram.Api.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_LoyaltyCardId",
+                name: "IX_RankSystems_ShopId",
+                table: "RankSystems",
+                column: "ShopId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_LoyaltyCardId1",
                 table: "Transactions",
-                column: "LoyaltyCardId");
+                column: "LoyaltyCardId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_LoyaltyCardId2",
+                table: "Transactions",
+                column: "LoyaltyCardId2");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_ShopId",
@@ -179,6 +220,9 @@ namespace LoyaltyProgram.Api.Migrations
         {
             migrationBuilder.DropTable(
                 name: "HistoryRewards");
+
+            migrationBuilder.DropTable(
+                name: "RankSystems");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

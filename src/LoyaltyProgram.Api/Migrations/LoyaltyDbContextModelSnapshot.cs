@@ -123,8 +123,9 @@ namespace LoyaltyProgram.Api.Migrations
                         .HasColumnType("text")
                         .HasAnnotation("Relational:JsonPropertyName", "rank");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasAnnotation("Relational:JsonPropertyName", "status");
 
                     b.Property<int?>("clientId")
@@ -155,8 +156,9 @@ namespace LoyaltyProgram.Api.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Relational:JsonPropertyName", "points_needed");
 
-                    b.Property<int>("Rank")
-                        .HasColumnType("integer")
+                    b.Property<string>("Rank")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasAnnotation("Relational:JsonPropertyName", "rank");
 
                     b.Property<string>("RankDescription")
@@ -171,7 +173,7 @@ namespace LoyaltyProgram.Api.Migrations
 
                     b.HasIndex("ShopId");
 
-                    b.ToTable("RankSystem");
+                    b.ToTable("RankSystems");
 
                     b.HasAnnotation("Relational:JsonPropertyName", "rank_system");
                 });
@@ -253,19 +255,33 @@ namespace LoyaltyProgram.Api.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasAnnotation("Relational:JsonPropertyName", "created_at");
 
-                    b.Property<int?>("LoyaltyCardId")
+                    b.Property<DateTime?>("DateExpirationPoints")
+                        .HasColumnType("timestamp with time zone")
+                        .HasAnnotation("Relational:JsonPropertyName", "date_expiration_points");
+
+                    b.Property<string>("LoyaltyCardId")
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "loyalty_card_id");
+
+                    b.Property<int?>("LoyaltyCardId1")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LoyaltyCardId2")
                         .HasColumnType("integer");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("integer")
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasAnnotation("Relational:JsonPropertyName", "transaction_type");
 
                     b.HasKey("TransactionId");
 
-                    b.HasIndex("LoyaltyCardId");
+                    b.HasIndex("LoyaltyCardId1");
+
+                    b.HasIndex("LoyaltyCardId2");
 
                     b.HasIndex("ShopId");
 
@@ -317,11 +333,17 @@ namespace LoyaltyProgram.Api.Migrations
                 {
                     b.HasOne("LoyaltyProgram.Domain.LoyaltyCard", null)
                         .WithMany("Transactions")
-                        .HasForeignKey("LoyaltyCardId");
+                        .HasForeignKey("LoyaltyCardId1");
+
+                    b.HasOne("LoyaltyProgram.Domain.LoyaltyCard", "LoyaltyCard")
+                        .WithMany()
+                        .HasForeignKey("LoyaltyCardId2");
 
                     b.HasOne("LoyaltyProgram.Domain.Shop", "Shop")
                         .WithMany()
                         .HasForeignKey("ShopId");
+
+                    b.Navigation("LoyaltyCard");
 
                     b.Navigation("Shop");
                 });
