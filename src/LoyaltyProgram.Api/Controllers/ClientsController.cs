@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using LoyaltyProgram.Application;
 using LoyaltyProgram.Domain;
 using LoyaltyProgram.Domain.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LoyaltyProgram.Api.Controllers
 {
@@ -9,6 +10,7 @@ namespace LoyaltyProgram.Api.Controllers
     [ApiController]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [Authorize]
     public class ClientsController : ControllerBase
     {
         private readonly ClientService _clientService;

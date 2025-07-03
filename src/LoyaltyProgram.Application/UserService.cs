@@ -43,16 +43,40 @@ namespace LoyaltyProgram.Application
 
         }
 
-        public async Task<string> Authenticate(string username, string password)
+        public async Task<string?> Authenticate(string username, string password)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
 
-            if (user == null)
+            if (user == null || !VerifyPasswordHash(password, user.PasswordHash))
             {
-
+                return null;
             }
+            return GenerateJwtToken(user);
         }
 
+        private string GenerateJwtToken(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"] ?? string.Empty);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        private bool VerifyPasswordHash(string password, string passwordHash)
+        {
+            return passwordHash == GeneratePasswordHash(password);
+        }
 
         private string GeneratePasswordHash(string password)
         {

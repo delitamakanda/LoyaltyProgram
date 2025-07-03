@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using LoyaltyProgram.Application;
 using LoyaltyProgram.Domain;
 using LoyaltyProgram.Domain.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LoyaltyProgram.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]

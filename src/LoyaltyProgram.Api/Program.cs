@@ -4,6 +4,9 @@ using LoyaltyProgram.Application;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using LoyaltyProgram.Api.Filters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,21 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 });
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty)),
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero // remove delay of token when expire
+    };
+});
+
+builder.Services.AddAuthentication();
+
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<LoyaltyProgramService>();
@@ -25,6 +43,7 @@ builder.Services.AddScoped<ShopService>();
 builder.Services.AddScoped<LoyaltyCardService>();
 builder.Services.AddScoped<RewardService>();
 builder.Services.AddScoped<HistoryRewardService>();
+builder.Services.AddScoped<UserService>();
 
 
 // Add services to the container.
@@ -33,7 +52,31 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.DocumentFilter<SnakeCaseDocumentFilter>();
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
+
 builder.Services.AddRouting(options =>
 {
     options.LowercaseUrls = true;
@@ -50,6 +93,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseAuthentication();
 app.MapControllers();
 
 app.Run();
