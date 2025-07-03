@@ -6,6 +6,10 @@ Stack moderne : .NET 8, Docker, PostgreSQL.
 [![.NET](https://github.com/delitamakanda/LoyaltyProgram/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/delitamakanda/LoyaltyProgram/actions/workflows/ci.yml)
 ![version](https://img.shields.io/badge/dotnet%20version-net8.0-blue)
 
+## Screenshots
+
+![Image 1](extras/localhost_5237_swagger_index.html (1).png)
+![Image 2](extras/localhost_5237_swagger_index.html.png)
 
 ## 📦 Fonctionnalités
 
