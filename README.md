@@ -8,7 +8,7 @@ Stack moderne : .NET 8, Docker, PostgreSQL.
 
 ## Screenshots
 
-![Image 1](extras/localhost_5237_swagger_index.html (1).png)
+![Image 1](extras/localhost_5237_swagger_index.html_2.png)
 ![Image 2](extras/localhost_5237_swagger_index.html.png)
 
 ## 📦 Fonctionnalités
