@@ -15,6 +15,7 @@ Stack moderne : .NET 8, Docker, PostgreSQL.
 - ✅ Validité limitée dans le temps des récompenses
 - ✅ Système de statuts (VIP, Silver, Gold...)
 - ✅ Documentation Swagger intégrée
+- ✅ Sécurisation par Authentification (JWT)
 
 ## 🚀 Prérequis
 
@@ -77,4 +78,3 @@ dotnet test
 
 - Gestion des récompenses (modèle + endpoints)
 - Historique des transactions et points
-- Sécurisation par Authentification (JWT)
