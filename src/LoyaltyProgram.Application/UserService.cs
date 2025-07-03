@@ -57,7 +57,14 @@ namespace LoyaltyProgram.Application
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"] ?? string.Empty);
+            var keyString = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Invalid JWT key");
+
+            if (string.IsNullOrWhiteSpace(keyString) || keyString.Length < 16)
+            {
+                throw new InvalidOperationException("Invalid JWT key length.");
+            }
+            
+            var key = Encoding.ASCII.GetBytes(keyString);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
