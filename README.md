@@ -20,6 +20,8 @@ Stack moderne : .NET 8, Docker, PostgreSQL.
 - ✅ Système de statuts (VIP, Silver, Gold...)
 - ✅ Documentation Swagger intégrée
 - ✅ Sécurisation par Authentification (JWT)
+- ✅ Historique des transactions et points
+- ✅ Gestion des récompenses (modèle + endpoints)
 
 ## 🚀 Prérequis
 
@@ -80,5 +82,7 @@ dotnet test
 
 ## 📝 TODO Évolutions
 
-- Gestion des récompenses (modèle + endpoints)
-- Historique des transactions et points
+- Support multilingue
+- Optimisation multi-devices
+- Export des données (transactions, points, récompenses) pour reporting ou analyses
+- Développement d'un Dashboard
