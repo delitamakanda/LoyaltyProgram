@@ -57,7 +57,7 @@ namespace LoyaltyProgram.Api.Controllers
 
         [HttpDelete("{id}")]
         public ActionResult<Reward> DeleteReward(int id)
-        { 
+        {
             var reward = _rewardService.GetRewardById(id);
             if (reward == null)
             {
@@ -65,6 +65,21 @@ namespace LoyaltyProgram.Api.Controllers
             }
             _rewardService.DeleteReward(reward.RewardId);
             return NoContent();
+        }
+
+        [HttpGet("rewards/csv")]
+        public ActionResult GetRewardsAsCsv()
+        { 
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("RewardId,Stock,Description,Points,CreatedAt");
+            var rewards = _rewardService.GetRewards();
+            foreach (var reward in rewards)
+            {
+                sb.AppendLine($"{reward.RewardId},{reward.Stock},{reward.Description},{reward.PointsNeeded},{reward.CreatedDate:yyyy-MM-dd HH:mm:ss}");
+            }
+
+            var csvBytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            return File(csvBytes, "text/csv", "rewards.csv");
         }
     }
 }

@@ -44,5 +44,20 @@ namespace LoyaltyProgram.Api.Controllers
         {
             return Ok(_transactionService.SearchTransactionsByShopClientLoyaltyCard(shopId, clientId, loyaltyCardId, startDate, endDate));
         }
+
+        [HttpGet("transactions/csv")]
+        public ActionResult ExportTransactionsCsv()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("TransactionId,ShopName,ClientLastName, ClientFirstName,LoyaltyCardNumber,Amount,CreatedAt");
+            var transactions = _transactionService.ExportTransactionsCsv();
+            foreach (var transaction in transactions)
+            {
+                sb.AppendLine($"{transaction.TransactionId},{transaction.Shop?.Name ?? string.Empty},{transaction.LoyaltyCard?.Client?.LastName ?? string.Empty}, {transaction.LoyaltyCard?.Client?.FirstName ?? string.Empty},{transaction.LoyaltyCard?.CardNumber ?? string.Empty},{transaction.Amount},{transaction.CreatedAt:yyyy-MM-dd HH:mm:ss}");
+            }
+
+            var csvBytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            return File(csvBytes, "text/csv", "transactions.csv");
+        }
     }
 }

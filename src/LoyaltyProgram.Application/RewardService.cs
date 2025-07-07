@@ -1,5 +1,6 @@
 using LoyaltyProgram.Infrastructure;
 using LoyaltyProgram.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace LoyaltyProgram.Application
 {
@@ -35,7 +36,7 @@ namespace LoyaltyProgram.Application
         }
 
         public void DeleteReward(int rewardId)
-        { 
+        {
             var reward = _context.Rewards.Find(rewardId);
             if (reward != null)
             {
@@ -43,6 +44,5 @@ namespace LoyaltyProgram.Application
                 _context.SaveChanges();
             }
         }
-        
     }
 }
