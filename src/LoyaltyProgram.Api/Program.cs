@@ -53,8 +53,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty)),
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero, // remove delay of token when expire
-        ValidAudience = builder.Configuration["Jwt:Audience"] ?? "LoyaltyProgram",
-        ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "LoyaltyProgram",
+        ValidAudience = builder.Configuration["Jwt:Audience"] ?? string.Empty,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? string.Empty,
         RequireExpirationTime = true,
         RequireSignedTokens = true,
         ValidateAudience = builder.Environment.IsProduction(),
