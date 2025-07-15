@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using LoyaltyProgram.Api.Filters;
 using Microsoft.Extensions.Options;
 
 namespace LoyaltyProgram.Api
@@ -17,39 +16,16 @@ namespace LoyaltyProgram.Api
 
         public void Configure(SwaggerGenOptions options)
         {
-            options.DocumentFilter<SnakeCaseDocumentFilter>();
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        
+            foreach (var description in _provider.ApiVersionDescriptions)
             {
-                Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
-            });
-
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement{
+                options.SwaggerDoc(description.GroupName, new OpenApiInfo
                 {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-    
-    foreach (var description in _provider.ApiVersionDescriptions)
-    {
-        options.SwaggerDoc(description.GroupName, new OpenApiInfo
-        {
-            Title = $"Loyalty Program API {description.ApiVersion}",
-            Version = description.ApiVersion.ToString(),
-            Description = "API for managing loyalty program and rewards"
-        });
-    }
+                    Title = $"Loyalty Program API {description.ApiVersion}",
+                    Version = description.ApiVersion.ToString(),
+                    Description = "API for managing loyalty program and rewards"
+                });
+            }
 
         }
 

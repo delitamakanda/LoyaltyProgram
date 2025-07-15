@@ -3,14 +3,16 @@ using LoyaltyProgram.Infrastructure;
 using LoyaltyProgram.Application;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using LoyaltyProgram.Api.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using LoyaltyProgram.Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.ConfigureOptions<LoyaltyProgram.Api.ConfigureSwaggerOptions>();
 
 builder.Services.AddDbContext<LoyaltyDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("LoyaltyProgram.Api")));
 
@@ -50,15 +52,66 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty)),
         ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero // remove delay of token when expire
+        ClockSkew = TimeSpan.Zero, // remove delay of token when expire
+        ValidAudience = builder.Configuration["Jwt:Audience"] ?? "LoyaltyProgram",
+        ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "LoyaltyProgram",
+        RequireExpirationTime = true,
+        RequireSignedTokens = true,
+        ValidateAudience = builder.Environment.IsProduction(),
+        ValidateIssuer = builder.Environment.IsProduction()
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine("Authentication failed: " + context.Exception.Message);
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            Console.WriteLine("Token validated");
+            return Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            Console.WriteLine("Challenge called" + context.ErrorDescription);
+            return Task.CompletedTask;
+        }
     };
 });
 
-builder.Services.AddAuthentication();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.DocumentFilter<SnakeCaseDocumentFilter>();
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy", builder => builder
+    options.AddPolicy("AllowAny", builder => builder
        .AllowAnyOrigin()
        .AllowAnyMethod()
        .AllowAnyHeader());
@@ -77,9 +130,6 @@ builder.Services.AddScoped<UserService>();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen();
-builder.Services.ConfigureOptions<LoyaltyProgram.Api.ConfigureSwaggerOptions>();
 
 builder.Services.AddRouting(options =>
 {
@@ -103,9 +153,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
-app.UseCors("CorsPolicy");
+app.UseCors("AllowAny");
 
 app.Run();

@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LoyaltyProgram.Api.Controllers
 {
+    [Authorize]
     [ApiVersion("1.0")]
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [Authorize]
     public class ClientsController : ControllerBase
     {
         private readonly ClientService _clientService;
@@ -22,10 +22,33 @@ namespace LoyaltyProgram.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Client>> GetClients()
+        public async Task<IActionResult> GetClients(
+            [FromQuery] int page = 1,
+            [FromQuery(Name = "page_size")] int pageSize = 20,
+            [FromQuery(Name = "sort_by")] string sortBy = "DateCreated",
+            [FromQuery] bool ascending = true,
+            [FromQuery(Name = "q")] string? search = null,
+            [FromQuery(Name = "start_date")] DateTime? startDate = null,
+            [FromQuery(Name = "end_date")] DateTime? endDate = null
+        )
         {
             var clients = _clientService.GetClients();
-            return Ok(clients);
+            var query = clients.AsQueryable();
+            var paginatedResult = await query.ToPagedResultAsync(
+                page,
+                pageSize,
+                sortBy,
+                ascending,
+                search,
+                startDate,
+                endDate,
+                x => x.DateCreated!.Value,
+                x => x.FirstName!,
+                x => x.LastName!,
+                x => x.PhoneNumber!,
+                x => x.Email!
+            );
+            return Ok(paginatedResult);
         }
 
         [HttpGet("{id}")]
