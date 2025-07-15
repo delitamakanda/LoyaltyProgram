@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LoyaltyProgram.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [Authorize]
