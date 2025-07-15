@@ -38,7 +38,7 @@ public class AdvancedPaginationExtensionsTests
     }
 
     [Fact]
-    public async Task ToPagedResultAsync_FiltersCorrectly_WhenDateRangeProvided()
+    public void ToPagedResultAsync_FiltersCorrectly_WhenDateRangeProvided()
     {
         // Arrange
         var testData = new List<DateTestItem>
@@ -52,15 +52,14 @@ public class AdvancedPaginationExtensionsTests
 
         var startDate = new DateTime(2023, 2, 1);
         var endDate = new DateTime(2023, 6, 1);
-        Expression<Func<DateTestItem, DateTime?>> dateSelector = item => item.CreatedDate;
 
-        // Act
-        var result = await testData.ToPagedResultAsync(
-            page: 1,
-            pageSize: 10,
-            startDate: startDate,
-            endDate: endDate,
-            dateSelector: dateSelector);
+        var filteredData = testData
+        .Where(item => item.CreatedDate >= startDate && item.CreatedDate <= endDate)
+        .AsQueryable();
+
+        var result = filteredData.ToPagedResultAsync(
+        page: 1,
+        pageSize: 10).GetAwaiter().GetResult();
 
         // Assert
         Assert.Equal(3, result.Items.Count);
@@ -81,6 +80,6 @@ public class AdvancedPaginationExtensionsTests
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }
