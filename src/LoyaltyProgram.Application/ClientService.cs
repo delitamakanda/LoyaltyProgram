@@ -7,6 +7,11 @@ namespace LoyaltyProgram.Application
 {
     public class ClientService
     {
+        private static readonly Regex _emailRegex = new Regex(
+            @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant,
+            TimeSpan.FromMilliseconds(500));
+
         private readonly LoyaltyDbContext _context;
         public ClientService(LoyaltyDbContext context)
         {
@@ -51,8 +56,7 @@ namespace LoyaltyProgram.Application
 
         static bool IsValidEmail(string email)
         {
-            var regex = new Regex(@"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$");
-            return regex.IsMatch(email) ? true : false;
+            return _emailRegex.IsMatch(email);
         }
         static string GenerateCardNumber()
         {
