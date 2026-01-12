@@ -125,6 +125,7 @@ builder.Services.AddScoped<LoyaltyCardService>();
 builder.Services.AddScoped<RewardService>();
 builder.Services.AddScoped<HistoryRewardService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TransactionService>();
 
 
 // Add services to the container.
