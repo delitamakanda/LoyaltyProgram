@@ -56,12 +56,19 @@ namespace LoyaltyProgram.Application
 
         static bool IsValidEmail(string email)
         {
-            return _emailRegex.IsMatch(email);
+            try
+            {
+                return _emailRegex.IsMatch(email);
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return false;
+            }
         }
         static string GenerateCardNumber()
         {
             var prefix = new Random().Next(1000, 9999).ToString();
-            var uniqueSuffix = Guid.NewGuid().ToString("N").Substring(6, 6);;
+            var uniqueSuffix = Guid.NewGuid().ToString("N").Substring(6, 6); ;
             return $"LOYALTY-{prefix}-{uniqueSuffix}";
         }
     }
