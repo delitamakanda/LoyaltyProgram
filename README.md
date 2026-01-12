@@ -43,7 +43,7 @@ cd LoyaltyProgram.Api
 docker-compose up --build
 ```
 
-API accessible sur : http://localhost:5237/swagger/index.html
+API accessible sur : [http://localhost:5237/swagger/index.html](Swagger)
 
 Base de données PostgreSQL dispo sur localhost:5432
 
